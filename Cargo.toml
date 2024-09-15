@@ -1,0 +1,16 @@
+[package]
+name = "test-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = { version = "4", features = ["rustls-0_23"] }
+rustls = "0.23"
+rustls-pemfile = "2"
+utoipa = { version = "4", features = ["actix_extras"] }
+utoipa-swagger-ui = { version = "4", features = ["actix-web"] }
+
+[[bin]]
+name = "test-api"
+path = "main.rs"
+
