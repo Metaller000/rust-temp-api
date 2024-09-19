@@ -50,19 +50,23 @@ async fn main() -> std::io::Result<()> {
     #[derive(OpenApi)]
     #[openapi(paths(api::hello))]
     struct ApiDoc;
-    
+
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+    let port: u16 = 8080;
+    let host: &str = "0.0.0.0";
+    let e_run_msg = format!("{} '{}:{}'", "url", host, port);
 
     HttpServer::new(move || {
         App::new()
             .wrap(Logger::default())
             .service(web::scope("/api").service(api::hello))
-            .service(SwaggerUi::new("/swagger-ui/{_:.*}").urls(vec![(
-                Url::with_primary("api", "/api-docs/openapi.json", true),
+            .service(SwaggerUi::new("/docs/{_:.*}").urls(vec![(
+                Url::with_primary("api", "/openapi.json", true),
                 ApiDoc::openapi(),
             )]))
     })
-    .bind_rustls_0_23(("127.0.0.1", 8080), tls_config)?
+    .bind_rustls_0_23((host, port), tls_config)
+    .expect(e_run_msg.as_str())
     .run()
     .await
 }
