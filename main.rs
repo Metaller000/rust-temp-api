@@ -26,8 +26,8 @@ async fn main() -> std::io::Result<()> {
         .install_default()
         .unwrap();
 
-    let mut certs_file = BufReader::new(File::open("/app/test-api/cert.pem").unwrap());
-    let mut key_file = BufReader::new(File::open("/app/test-api/key.pem").unwrap());
+    let mut certs_file = BufReader::new(File::open("cert.pem").unwrap());
+    let mut key_file = BufReader::new(File::open("key.pem").unwrap());
 
     // load TLS certs and key
     // to create a self-signed temporary cert for testing:
@@ -50,6 +50,8 @@ async fn main() -> std::io::Result<()> {
     #[derive(OpenApi)]
     #[openapi(paths(api::hello))]
     struct ApiDoc;
+    
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     HttpServer::new(move || {
         App::new()
