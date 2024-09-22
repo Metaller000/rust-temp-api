@@ -26,12 +26,9 @@ async fn main() -> std::io::Result<()> {
         .install_default()
         .unwrap();
 
-    let mut certs_file = BufReader::new(File::open("cert.pem").unwrap());
-    let mut key_file = BufReader::new(File::open("key.pem").unwrap());
+    let mut certs_file = BufReader::new(File::open("srv.cer").unwrap());
+    let mut key_file = BufReader::new(File::open("srv.key").unwrap());
 
-    // load TLS certs and key
-    // to create a self-signed temporary cert for testing:
-    // `openssl req -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365 -subj '/CN=localhost'`
     let tls_certs = rustls_pemfile::certs(&mut certs_file)
         .collect::<Result<Vec<_>, _>>()
         .unwrap();
@@ -52,6 +49,7 @@ async fn main() -> std::io::Result<()> {
     struct ApiDoc;
 
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
     let port: u16 = 8080;
     let host: &str = "0.0.0.0";
     let e_run_msg = format!("{} '{}:{}'", "url", host, port);

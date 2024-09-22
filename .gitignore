@@ -1,2 +1,5 @@
 /target
 *.pem
+*.cer
+*.key
+*.crt
