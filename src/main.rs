@@ -1,7 +1,8 @@
+mod config;
+
 use actix_web::{middleware::Logger, web, App, HttpServer};
 use std::fs::File;
 use std::io::BufReader;
-
 use utoipa::OpenApi;
 use utoipa_swagger_ui::{SwaggerUi, Url};
 
